@@ -3,8 +3,8 @@ from discord import Option
 from dotenv import load_dotenv
 import openai
 
-openai.api_key = "OpenAI API Key"
-TOKEN = "Bot API Token"
+openai.api_key = "OpenAI API Key" # < WARNING do not share this key
+TOKEN = "Bot API Token" # < WARNING do not share this key
 load_dotenv()
 
 
@@ -35,6 +35,7 @@ async def ask(ctx: discord.ApplicationContext, prompt: Option(str, required=True
     response = openai.chat.completions.create(
 
         model="gpt-3.5-turbo",# ← You can change the model as you wish
+        # Additionally, you may also use a custom model you trained yourself
         messages=messages,
         temperature=0,
     )
