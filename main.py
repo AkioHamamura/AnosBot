@@ -3,8 +3,8 @@ from discord import Option
 from dotenv import load_dotenv
 import openai
 
-openai.api_key = "OpenAI API Key" # < WARNING do not share this key
-TOKEN = "Bot API Token" # < WARNING do not share this key
+openai.api_key = "Open AI API Key" # < WARNING do not share this key
+TOKEN = "Discord Bot Key" # < WARNING do not share this key
 load_dotenv()
 
 
@@ -31,6 +31,7 @@ async def hello(
 
 @bot.slash_command(description="Ask a question to openAI", guild_ids=GUILD_IDS)
 async def ask(ctx: discord.ApplicationContext, prompt: Option(str, required=True, description="question", )):
+    await ctx.response.defer()
     messages.append({"role": "user", "content": prompt})
     response = openai.chat.completions.create(
 
@@ -39,8 +40,8 @@ async def ask(ctx: discord.ApplicationContext, prompt: Option(str, required=True
         messages=messages,
         temperature=0,
     )
-    messages.append({"role": "system", "content": response.choices[0].message.content})
-    await ctx.respond(response.choices[0].message.content)
 
+    messages.append({"role": "system", "content": response.choices[0].message.content})
+    await ctx.followup.send(response.choices[0].message.content)
 
 bot.run(TOKEN)
